@@ -94,6 +94,9 @@ export default {
           alert('네트워크가 원활하지 않습니다.');
         }
         })
+    },
+    fnWrite() {
+      this.$router.push('/board')
     }
     }
 }

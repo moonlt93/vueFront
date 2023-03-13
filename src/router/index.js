@@ -21,6 +21,7 @@ const routes = [
     name: 'BoardList',
     component: BoardList
   }
+
 ]
 
 const router = createRouter({
