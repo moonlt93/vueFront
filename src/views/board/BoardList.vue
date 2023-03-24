@@ -2,6 +2,7 @@
   <div class="board-list">
     <div class="common-buttons">
       <button type="button" class="w3-button w3-round w3-blue-gray" v-on:click="fnWrite">등록</button>
+    
     </div>
     <table class="w3-table-all">
       <thead>
@@ -41,7 +42,7 @@
     </div>
   </div>
 </template>
-
+/* views/BoardList.vue */
 <script>
 export default {
   data() { //변수생성
@@ -79,25 +80,43 @@ export default {
   },
   methods: {
     fnGetList() {
-    this.requestBody={
-      keyword: this.keyword,
-      page: this.page,
-      size: this.size
-    }
-    this.$axios.get(this.$serverUrl + "/board/list",{
+      this.requestBody = { // 데이터 전송        
+        keyword: this.keyword,
+        page: this.page,
+        size: this.size
+      }
+
+      this.$axios.get(this.$serverUrl + "/board/list", {
         params: this.requestBody,
-        headers:{}
-        }).then((res) => {
-        this.list = res.data
-        }).catch((err) => {
-        if(err.message.indexOf('Network Error') > -1){
-          alert('네트워크가 원활하지 않습니다.');
+        headers: {}
+      }).then((res) => {      
+
+        this.list = res.data  //서버에서 데이터를 목록으로 보내므로 바로 할당하여 사용할 수 있다.
+
+      }).catch((err) => {
+        if (err.message.indexOf('Network Error') > -1) {
+          alert('네트워크가 원활하지 않습니다.\n잠시 후 다시 시도해주세요.')
         }
-        })
+      })
+    },
+    fnView(idx) {
+      this.requestBody.idx = idx
+      this.$router.push({
+        path: './detail',
+        query: this.requestBody
+      })
     },
     fnWrite() {
-      this.$router.push('/board')
+      this.$router.push({
+        path: './'
+      })
+    },
+    fnPage(n) {
+      if (this.page !== n) {
+        this.page = n
+        this.fnGetList()
+      }
     }
-    }
+  }
 }
 </script>
